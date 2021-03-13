@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.container img,
+.container button,
+.container span {
+  margin-right: 5px;
+  font-family: 'Roboto', sans-serif;
+}

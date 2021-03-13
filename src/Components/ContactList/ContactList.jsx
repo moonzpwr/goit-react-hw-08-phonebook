@@ -19,20 +19,29 @@ class ContactList extends Component {
     render() {
         const {contacts, onRemoveContact} = this.props
         return (
-        <TransitionGroup component='ul' >
-            {contacts.map(el => {
-                return (
-                    <CSSTransition key={el.id} timeout={250} classNames={s}>
-                        <ContactItem
-                            id={el.id}
-                            name={el.name}
-                            number={el.number}
-                            onClickRemove={onRemoveContact} />
-                    </CSSTransition>
-                )
-            })}
-        </TransitionGroup>
-    )
+        <div className={s.container}>
+            <CSSTransition
+                in={true}
+                appear={true}
+                timeout={500}
+                classNames='title'>
+                <h2 className="title">Contacts</h2>
+            </CSSTransition>
+            <TransitionGroup component='ul' className={s.contactList}>
+                {contacts.map(el => {
+                    return (
+                        <CSSTransition key={el.id} timeout={250} classNames={s}>
+                            <ContactItem
+                                id={el.id}
+                                name={el.name}
+                                number={el.number}
+                                onClickRemove={onRemoveContact} />
+                        </CSSTransition>
+                    )
+                })}
+            </TransitionGroup>
+        </div>
+        )
     }
     
 }

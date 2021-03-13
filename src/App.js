@@ -1,42 +1,51 @@
-import { CSSTransition } from 'react-transition-group';
+
+import { Suspense, lazy, Component } from 'react';
+import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
-import ContactForm from './Components/ContactForm/ContactForm';
-import ContactList from './Components/ContactList/ContactList';
-import Filter from './Components/Filter/Filter';
+import PrivateRoute from './Components/Routes/PrivateRoute';
+import PublickRoute from './Components/Routes/PublickRoute';
 import './App.css';
-import phonebookSelectors from './redux/phonebook/phonebook-selectors'
+import routes from './routes';
+import authOperations from './redux/auth/auth-operations';
 
 
-function App(props) {
-  return (
-   <div className="main-container">
-      <CSSTransition
-        in={true}
-        appear={true}
-        timeout={500}
-        classNames='title'>
-        <h1>Phonebook</h1>
-      </CSSTransition>
-      
-      <ContactForm />
+const Navigation = lazy(() => import('./Components/Navigation/Navigation' /* webpackChunkName: "navigation" */));
+const HomeView = lazy(() => import('./views/HomeView' /* webpackChunkName: "home" */));
+const Phonebook = lazy(() => import('./views/PhonebookView' /* webpackChunkName: "Phonebook" */));
+const Registration = lazy(() => import('./views/RegistrationView' /* webpackChunkName: "Registration" */));
+const Login = lazy(() => import('./views/LoginView' /* webpackChunkName: "Login" */));
 
-      <h2>Contacts</h2>
-      <CSSTransition
-        in={props.contacts.length > 1}
-        unmountOnExit
-        timeout={250}
-        classNames='filter'
-        >
-        <Filter/>
-      </CSSTransition>
 
-      <ContactList/>
-    </div>
-  );
+
+
+class App extends Component {
+  componentDidMount() {
+    this.props.onGetCurrentUser()
   }
 
-const mapStateToProps = (state) => ({
-    contacts: phonebookSelectors.getItems(state)
-})
+  render() {
+     return (
+      <>
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <div className='container'>
+             <Navigation />
+              <Switch>
+                <Route path={routes.home} exact component={HomeView} />
+                <PrivateRoute path={routes.phonebook}  component={Phonebook} redirectTo={routes.login}/>
+                <PublickRoute path={routes.registration}  component={Registration} restricted redirectTo={routes.phonebook}/>
+                <PublickRoute path={routes.login}  component={Login} restricted redirectTo={routes.phonebook}/>
+                <Redirect to={routes.home}  />
+              </Switch>
+          </div>
+          
+        </Suspense>
+      </>
+    );
+  }
+}
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = {
+  onGetCurrentUser: authOperations.getCurentUser
+}
+
+export default connect(null, mapDispatchToProps)(App)

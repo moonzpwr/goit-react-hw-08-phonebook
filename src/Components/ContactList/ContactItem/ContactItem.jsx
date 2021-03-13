@@ -5,7 +5,7 @@ import s from './ContactItem.module.css';
 
 export default function ContactItem({ name, number="", onClickRemove, id}) { 
     return (
-            <li className={s.contactContainer}>
+            <li className={s.item}>
                 {name}: {number}
                 <button
                     type="button"
@@ -22,7 +22,7 @@ ContactItem.propTypes = {
     name: propTypes.string.isRequired,
     number: propTypes.string,
     onClickRemove: propTypes.func.isRequired,
-    id: propTypes.number,
+    id: propTypes.string,
 }
 
 

@@ -48,14 +48,21 @@ class ContactForm extends Component {
 
 
         return (
-            <>
-            <form className={s.container} onSubmit={this.handleSubmit}>
-                <label className={s.contactName}>Name
+            <div className={s.container}>
+                <CSSTransition
+            in={true}
+            appear={true}
+            timeout={500}
+            classNames='title'>
+            <h1 className="title">Phonebook</h1>
+          </CSSTransition>
+            <form className={s.form} onSubmit={this.handleSubmit}>
+                <label>Name: 
                     <input type="text"
                     value={name}
                     onChange={this.handleChange} />
                 </label>
-                <label className={s.contactName}>Number
+                <label >Number: 
                     <input type="tel"
                     value={number}
                     onChange={this.handleChange}/>
@@ -72,7 +79,7 @@ class ContactForm extends Component {
             classNames='notification'>
                 <Alert onClickClose={this.closeNotification} />
             </CSSTransition>
-            </>
+            </div>
         )
         }
   

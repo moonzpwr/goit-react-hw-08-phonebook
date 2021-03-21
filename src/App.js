@@ -1,6 +1,6 @@
 
 import { Suspense, lazy, Component } from 'react';
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import PrivateRoute from './Components/Routes/PrivateRoute';
 import PublickRoute from './Components/Routes/PublickRoute';
@@ -29,11 +29,20 @@ class App extends Component {
         <Suspense fallback={<h1>Loading...</h1>}>
           <div className='container'>
              <Navigation />
-              <Switch>
-                <Route path={routes.home} exact component={HomeView} />
-                <PrivateRoute path={routes.phonebook}  component={Phonebook} redirectTo={routes.login}/>
-                <PublickRoute path={routes.registration}  component={Registration} restricted redirectTo={routes.phonebook}/>
-                <PublickRoute path={routes.login}  component={Login} restricted redirectTo={routes.phonebook}/>
+             <Switch>
+               <PublickRoute path={routes.home} exact>
+                  <HomeView/>
+               </PublickRoute>
+               <PublickRoute path={routes.registration} exact restricted redirectTo={routes.phonebook}>
+                 <Registration/>
+               </PublickRoute>
+               <PublickRoute path={routes.login} exact restricted redirectTo={routes.phonebook}>
+                <Login/>
+               </PublickRoute>
+                <PrivateRoute path={routes.phonebook} redirectTo={routes.login}>
+                  <Phonebook/>
+                </PrivateRoute>
+                
                 <Redirect to={routes.home}  />
               </Switch>
           </div>

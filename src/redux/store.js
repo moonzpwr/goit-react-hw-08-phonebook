@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware, combineReducers } from '@reduxjs/toolkit';
 import phonebookReducer from './phonebook/phonebook-reducer';
 import authreducer from './auth/auth-reduser'
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import {
   persistStore,
   persistReducer,
@@ -19,7 +19,7 @@ const middleware = [...getDefaultMiddleware({
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
     }
 }),
-  logger
+  // logger
 ];
 
 const authPersistConfig = {
